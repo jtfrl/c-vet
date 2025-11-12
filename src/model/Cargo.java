@@ -1,0 +1,10 @@
+package model;
+
+public enum Cargo {
+    AUXILIAR_VETERINARIO,
+    BIOMEDICO,
+    TOSADOR,
+    AUXILIAR_TOSADOR,
+    RESIDENTE_VETERINARIO,
+    MOTORISTA_ANIMAL
+}

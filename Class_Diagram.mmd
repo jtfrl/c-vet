@@ -1,0 +1,207 @@
+---
+title: 🏥 Sistema de Gestão - Clínica Veterinária
+---
+classDiagram
+    direction LR
+    
+    
+    class Pessoa {
+        -String CPF
+        -String nome
+        -String endereco
+        -String telefone
+        ---
+        +atualizarDados()
+        +exibirDados()
+        +getNome() String
+        +getCPF() String
+    }
+    
+    class Cliente {
+        -List~Animal~ listaDePets
+        -List~Produto~ listaDeProdutos
+        ---
+        +adicionarProduto()
+    }
+    
+    class Veterinario {
+        -String CRMV
+        -float salario
+        -List~Consulta~ listaDeConsultas
+    }
+    
+    class Funcionario {
+        -String identificadorCarteiraTrabalho
+        -float salario
+        -Cargo cargo
+        ---
+        +agendarServico() void
+    }
+    
+    
+    class Animal {
+        -int id
+        -Cliente cliente
+        -Especie especie
+        -Raca raca
+        -Date dataNascimento
+        -float peso
+        -String observacao
+        ---
+        +exibirHistoricoConsultas()
+        +exibirHistoricoServicos()
+    }
+    
+    
+    class ItemComercial {
+        -int id
+        -String nome
+        -String descricao
+        -float preco
+        ---
+        +aplicarDesconto() boolean
+        +imprimirDados() void
+    }
+    
+    class Produto {
+        -int estoque
+        ---
+        +vender()
+        +atualizarEstoque()
+    }
+    
+    class Servico {
+        -LocalDate data
+        -LocalTime hora
+        ---
+        +getAnimal() Animal
+    }
+    
+    class Consulta {
+        -int id
+        -String motivo
+        -String status
+        ---
+        +iniciarConsulta() void
+        +finalizarConsulta() void
+        +cancelarConsulta() void
+    }
+    
+    
+    class Especie {
+        <<enumeration>>
+        CACHORRO
+        GATO
+        PASSARO
+        ROEDOR
+        REPTIL
+        OUTRO
+    }
+    
+    class Raca {
+        <<enumeration>>
+        LABRADOR
+        GOLDEN_RETRIEVER
+        BULLDOG
+        PERSA
+        SIAMES
+        SEM_RACA_DEFINIDA
+        OUTRO
+    }
+    
+    class Cargo {
+        <<enumeration>>
+        ATENDENTE
+        AUXILIAR
+        GERENTE
+        OUTRO
+    }
+    
+    
+    class Clinica {
+        -int idClinica
+        -String nome
+        -String endereco
+        -String telefone
+        ---
+        +cadastrarCliente()
+        +cadastrarFuncionario()
+        +cadastrarVeterinario()
+        +cadastrarAnimal()
+        +agendarConsulta()
+        +realizarVenda()
+        +gerarRelatorio()
+    }
+    
+    
+    class LEGENDA {
+        <<legenda>>
+        🟠 HERANÇA
+        🔵 COMPOSIÇÃO - possui
+        🟣 GERENCIAMENTO - gerencia
+        🟢 COMERCIAL - compra/vende
+        🔴 ATENDIMENTO - recebe/realiza
+        🟡 REFERÊNCIA - usa/tem
+        ⚫ INTERNO - com/para
+    }
+    
+    
+    Pessoa <|-- Cliente : 🟠 herda
+    Pessoa <|-- Veterinario : 🟠 herda
+    Pessoa <|-- Funcionario : 🟠 herda
+    
+    ItemComercial <|-- Produto : 🟠 herda
+    ItemComercial <|-- Servico : 🟠 herda
+    Servico <|-- Consulta : 🟠 herda
+    
+    
+    Cliente "1" *-- "N" Animal : 🔵 possui
+    
+    
+    Clinica "1" o-- "N" Cliente : 🟣 gerencia
+    Clinica "1" o-- "N" Funcionario : 🟣 gerencia
+    Clinica "1" o-- "N" Veterinario : 🟣 gerencia
+    Clinica "1" o-- "N" Animal : 🟣 cadastra
+    Clinica "1" o-- "N" Consulta : 🟣 agenda
+    Clinica "1" o-- "N" Produto : 🟣 vende
+    Clinica "1" o-- "N" Servico : 🟣 oferece
+    
+    
+    Cliente "1" --> "N" Produto : 🟢 compra
+    
+    
+    Animal "1" --> "N" Consulta : 🔴 recebe
+    Animal "1" --> "N" Servico : 🔴 recebe
+    
+    Veterinario "1" --> "N" Consulta : 🔴 realiza
+    Funcionario "1" --> "N" Servico : 🔴 realiza
+    
+    
+    Animal ..> Especie : 🟡 usa
+    Animal ..> Raca : 🟡 usa
+    Funcionario ..> Cargo : 🟡 tem
+    
+    
+    Consulta "N" -- "N" Veterinario : ⚫ com
+    Servico "1" -- "N" Funcionario : ⚫ com
+    Servico "1" -- "1" Animal : ⚫ para
+    
+    
+    style Clinica fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    style Pessoa fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style ItemComercial fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Animal fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    
+    style Especie fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style Raca fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style Cargo fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    
+    style Cliente fill:#ffe0b2,stroke:#e65100,stroke-width:1px
+    style Veterinario fill:#ffe0b2,stroke:#e65100,stroke-width:1px
+    style Funcionario fill:#ffe0b2,stroke:#e65100,stroke-width:1px
+    
+    style Produto fill:#e1bee7,stroke:#4a148c,stroke-width:1px
+    style Servico fill:#e1bee7,stroke:#4a148c,stroke-width:1px
+    style Consulta fill:#e1bee7,stroke:#4a148c,stroke-width:1px
+    
+    style LEGENDA fill:#fff,stroke:#000,stroke-width:2px,stroke-dasharray: 5 5
